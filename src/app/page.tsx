@@ -9,9 +9,6 @@ export default function Home() {
   const [evaluationDate, setEvaluationDate] = useState("");
   const [evaluationType, setEvaluationType] = useState("2026 STARGATE 서류평가");
   const [signatureImage, setSignatureImage] = useState<string | null>(null);
-  const [savedScores, setSavedScores] = useState<Record<string, ScoreSet>>({});
-  const [comments, setComments] = useState<Record<string, string>>({});
-  const currentComment = comments[currentCompany?.id] || "";
 
   const handleStart = () => {
   if (evaluationType === "2026 STARGATE 발표평가") {
