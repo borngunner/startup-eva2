@@ -21,20 +21,18 @@ type ScoreSet = {
   growth: number;
   tech: number;
   fit: number;
-  presentation: number;
 };
 
 const emptyScores: ScoreSet = {
   growth: 0,
   tech: 0,
   fit: 0,
-  presentation: 0,
 };
 
 export default function Home() {
   const [judgeName, setJudgeName] = useState("");
   const [evaluationDate, setEvaluationDate] = useState("");
-  const [evaluationType, setEvaluationType] = useState("STARGATE 발표평가");
+  const [evaluationType, setEvaluationType] = useState("STARGATE 서류평가");
   const [signatureImage, setSignatureImage] = useState<string | null>(null);
   const [isStarted, setIsStarted] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -43,7 +41,7 @@ export default function Home() {
   const [comments, setComments] = useState<Record<string, string>>({});
 const storageKey =
   judgeName.trim() !== ""
-    ? `stargate-presentation-evaluation-${judgeName}`
+    ? `stargate-document-evaluation-${judgeName}`
     : null;
 
 useEffect(() => {
@@ -83,11 +81,10 @@ const currentCompany = evaluationCompanies[currentIndex];
 const currentComment = comments[currentCompany?.id] || "";
 const currentScores = savedScores[currentCompany?.id] || emptyScores;
 
-  const scoreTotal =
-    currentScores.growth +
-    currentScores.tech +
-    currentScores.fit +
-    currentScores.presentation;
+const scoreTotal =
+  currentScores.growth +
+  currentScores.tech +
+  currentScores.fit;
 
     const labelStyle = {
   backgroundColor: "#fdf2f2",
@@ -216,10 +213,10 @@ const lastValueStyle = {
 
           <button
             onClick={() => {
-              if (evaluationType !== "STARGATE 발표평가") {
-                alert("현재는 STARGATE 발표평가 화면만 연결되어 있습니다.");
-                return;
-              }
+              if (evaluationType !== "STARGATE 서류평가") {
+  alert("현재는 STARGATE 서류평가 화면입니다.");
+  return;
+}
 
               setIsStarted(true);
             }}
@@ -253,7 +250,7 @@ const lastValueStyle = {
 
         <div className="mb-8 pr-40">
           <h1 className="text-3xl font-bold text-red-900 mb-2">
-            고려대 캠퍼스타운 STARGATE 발표평가표
+            고려대 캠퍼스타운 STARGATE 서류평가표
           </h1>
           <p className="text-gray-500">
             
@@ -295,18 +292,18 @@ const lastValueStyle = {
           </div>
         </section>
 
-<section className="screen-only border rounded-xl overflow-hidden mb-8">
+<section className="border rounded-xl overflow-hidden mb-8">
   <div className="bg-gray-900 text-white px-5 py-3 font-bold">
-    정량평가 참고용
+    정량평가
   </div>
 
   <table className="w-full border-collapse text-sm">
     <thead>
       <tr className="bg-gray-100">
-        <th className="border p-3 text-left w-[230px]">평가항목</th>
-        <th className="border p-3 text-left">세부 내용</th>
+        <th className="border p-3 text-left w-[220px]">평가항목</th>
+        <th className="border p-3 text-left">세부 평가내용</th>
         <th className="border p-3 w-[90px]">배점</th>
-        <th className="border p-3 w-[120px]">점수</th>
+        <th className="border p-3 w-[120px]">평가점수</th>
       </tr>
     </thead>
 
@@ -337,16 +334,12 @@ const lastValueStyle = {
           정량평가 합계
         </td>
         <td className="border p-3 text-center font-bold">10점</td>
-        <td className="border p-3 text-center text-xl font-bold text-red-900">
+        <td className="border p-3 text-center text-2xl font-bold text-red-900">
           0점
         </td>
       </tr>
     </tbody>
   </table>
-
-  <p className="p-3 text-sm text-gray-500 bg-gray-50">
-    ※ 본 정량평가는 발표평가 참고용이며, 발표평가 점수에는 반영되지 않습니다.
-  </p>
 </section>
 
         <section className="border rounded-xl overflow-hidden mb-8">
@@ -357,7 +350,7 @@ const lastValueStyle = {
           <table className="w-full border-collapse text-sm">
             <thead>
               <tr className="bg-gray-100">
-                <th className="border p-3 text-left w-[230px]">평가항목</th>
+                <th className="border p-3 text-left w-[220px]">평가항목</th>
                 <th className="border p-3 text-left">세부 평가내용</th>
                 <th className="border p-3 w-[90px]">배점</th>
                 <th className="border p-3 w-[120px]">평가점수</th>
@@ -368,7 +361,7 @@ const lastValueStyle = {
               <tr>
                 <td className="border p-3 font-bold">기업역량 및 성장성</td>
                 <td className="border p-3 font-bold">사업성, 성장 가능성, 실행력</td>
-                <td className="border p-3 text-center font-bold">15점</td>
+                <td className="border p-3 text-center font-bold">10점</td>
                 <td className="border p-3">
                   <input
                     type="number"
@@ -388,7 +381,7 @@ const lastValueStyle = {
                 <td className="border p-3 font-bold">
                   제품·서비스 완성도, 시장 경쟁력
                 </td>
-                <td className="border p-3 text-center font-bold">15점</td>
+                <td className="border p-3 text-center font-bold">10점</td>
                 <td className="border p-3">
                   <input
                     type="number"
@@ -410,7 +403,7 @@ const lastValueStyle = {
                 <td className="border p-3 font-bold">
                   CES: 전시 및 글로벌 적합성 / ILS: 일본 시장 적합성
                 </td>
-                <td className="border p-3 text-center font-bold">20점</td>
+                <td className="border p-3 text-center font-bold">10점</td>
                 <td className="border p-3">
                   <input
                     type="number"
@@ -425,31 +418,13 @@ const lastValueStyle = {
                 </td>
               </tr>
 
-              <tr>
-                <td className="border p-3 font-bold">발표 역량</td>
-                <td className="border p-3 font-bold">
-                  CES: 현장 설명력 / ILS: 피칭 전달력
-                </td>
-                <td className="border p-3 text-center font-bold">10점</td>
-                <td className="border p-3">
-                  <input
-                    type="number"
-                    min="0"
-                    max="10"
-                    value={currentScores.presentation}
-                    onChange={(e) =>
-                      handleScoreChange("presentation", e.target.value, 10)
-                    }
-                    className="w-full border rounded-lg p-2 text-center font-bold"
-                  />
-                </td>
-              </tr>
+
 
               <tr className="bg-red-50">
                 <td colSpan={2} className="border p-3 text-right font-bold">
                   총점
                 </td>
-                <td className="border p-3 text-center font-bold">60점</td>
+                <td className="border p-3 text-center font-bold">30점</td>
                 <td className="border p-3 text-center text-2xl font-bold text-red-900">
                   {scoreTotal}점
                 </td>
@@ -560,11 +535,10 @@ const lastValueStyle = {
     const companyScores = savedScores[company.id] || emptyScores;
     const companyComment = comments[company.id] || "";
 
-    const companyTotal =
-      companyScores.growth +
-      companyScores.tech +
-      companyScores.fit +
-      companyScores.presentation;
+const companyTotal =
+  companyScores.growth +
+  companyScores.tech +
+  companyScores.fit;
 
     return (
       <div
@@ -582,159 +556,253 @@ const lastValueStyle = {
             className="absolute top-0 right-0 w-[110px]"
           />
 
-          <h1 className="text-3xl font-bold text-red-900 mb-8 mt-14 text-center">
-            고려대 캠퍼스타운 STARGATE 발표평가표
+          <h1 className="text-3xl font-bold text-red-900 mb-5 mt-6 text-center">
+            고려대 캠퍼스타운 STARGATE 서류평가표
           </h1>
 
-          <div className="border border-gray-300 rounded-xl overflow-hidden mb-6">
-            <div className="bg-red-900 text-white px-5 py-3 font-bold">
-              평가대상
-            </div>
+<div className="border border-gray-300 rounded-xl overflow-hidden mb-6">
+  <div className="bg-red-900 text-white px-5 py-3 font-bold">
+    평가대상
+  </div>
 
-            <div className="grid grid-cols-[120px_1fr] text-sm">
-              <div className="bg-red-50 text-red-900 font-bold p-3 border-r border-b border-gray-300">
-                연번
-              </div>
-              <div className="p-3 border-b border-gray-300 font-bold">
-                {index + 1}
-              </div>
+  <table className="w-full border-collapse text-sm">
+    <tbody>
+      <tr className="bg-gray-100 text-center">
+        <th className="border border-gray-300 p-3 w-[15%]">연번</th>
+        <th className="border border-gray-300 p-3 w-[35%]">입주기업명</th>
+        <th className="border border-gray-300 p-3 w-[25%]">대표자명</th>
+        <th className="border border-gray-300 p-3 w-[25%]">평가트랙</th>
+      </tr>
 
-              <div className="bg-red-50 text-red-900 font-bold p-3 border-r border-b border-gray-300">
-                입주기업명
-              </div>
-              <div className="p-3 border-b border-gray-300 font-bold">
-                {company.name}
-              </div>
+      <tr className="text-center font-bold">
+        <td className="border border-gray-300 p-3">{index + 1}</td>
+        <td className="border border-gray-300 p-3">{company.name}</td>
+        <td className="border border-gray-300 p-3">{company.ceo}</td>
+        <td className="border border-gray-300 p-3">
+          {company.evaluationTrack} 트랙
+        </td>
+      </tr>
 
-              <div className="bg-red-50 text-red-900 font-bold p-3 border-r border-b border-gray-300">
-                대표자명
-              </div>
-              <div className="p-3 border-b border-gray-300 font-bold">
-                {company.ceo}
-              </div>
+      <tr>
+        <th className="border border-gray-300 p-3 bg-gray-100 text-center">
+          아이템소개
+        </th>
+        <td colSpan={3} className="border border-gray-300 p-3 font-bold">
+          {company.itemIntro}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
-              <div className="bg-red-50 text-red-900 font-bold p-3 border-r border-b border-gray-300">
-                평가트랙
-              </div>
-              <div className="p-3 border-b border-gray-300 font-bold">
-                {company.evaluationTrack} 트랙
-              </div>
+<div className="border border-gray-300 rounded-xl overflow-hidden mb-6">
+  <div className="bg-gray-900 text-white px-5 py-3 font-bold">
+    정량평가
+  </div>
 
-              <div className="bg-red-50 text-red-900 font-bold p-3 border-r border-gray-300">
-                아이템소개
-              </div>
-              <div className="p-3 font-bold">{company.itemIntro}</div>
-            </div>
-          </div>
+  <table className="w-full border-collapse text-sm">
+    <thead>
+      <tr className="bg-gray-100">
+        <th className="border border-gray-300 p-3 text-left w-[230px]">
+          평가항목
+        </th>
 
-          <div className="border border-gray-300 rounded-xl overflow-hidden mb-6">
-            <div className="bg-gray-900 text-white px-5 py-3 font-bold">
-              평가항목
-            </div>
+        <th className="border border-gray-300 p-3 text-left">
+          세부 평가내용
+        </th>
 
-            <table className="w-full border-collapse text-sm">
-              <thead>
-                <tr className="bg-gray-100">
-                  <th className="border border-gray-300 p-3 text-left w-[230px]">
-                    평가항목
-                  </th>
-                  <th className="border border-gray-300 p-3 text-left">
-                    세부 평가내용
-                  </th>
-                  <th className="border border-gray-300 p-3 w-[90px]">
-                    배점
-                  </th>
-                  <th className="border border-gray-300 p-3 w-[100px]">
-                    평가점수
-                  </th>
-                </tr>
-              </thead>
+        <th className="border border-gray-300 p-3 w-[90px]">
+          배점
+        </th>
 
-              <tbody>
-                <tr>
-                  <td className="border border-gray-300 p-3 font-bold">
-                    기업역량 및 성장성
-                  </td>
-                  <td className="border border-gray-300 p-3 font-bold">
-                    사업성, 성장 가능성, 실행력
-                  </td>
-                  <td className="border border-gray-300 p-3 text-center font-bold">
-                    15점
-                  </td>
-                  <td className="border border-gray-300 p-3 text-center font-bold">
-                    {companyScores.growth}
-                  </td>
-                </tr>
+        <th className="border border-gray-300 p-3 w-[100px]">
+          평가점수
+        </th>
+      </tr>
+    </thead>
 
-                <tr>
-                  <td className="border border-gray-300 p-3 font-bold">
-                    기술·서비스 경쟁력
-                  </td>
-                  <td className="border border-gray-300 p-3 font-bold">
-                    제품·서비스 완성도, 시장 경쟁력
-                  </td>
-                  <td className="border border-gray-300 p-3 text-center font-bold">
-                    15점
-                  </td>
-                  <td className="border border-gray-300 p-3 text-center font-bold">
-                    {companyScores.tech}
-                  </td>
-                </tr>
+    <tbody>
+      <tr>
+        <td className="border border-gray-300 p-3 font-bold">
+          활동보고서 제출
+        </td>
 
-                <tr>
-                  <td className="border border-gray-300 p-3 font-bold">
-                    참가계획의 적정성 및 트랙 적합성
-                  </td>
-                  <td className="border border-gray-300 p-3 font-bold">
-                    CES: 전시 및 글로벌 적합성 / ILS: 일본 시장 적합성
-                  </td>
-                  <td className="border border-gray-300 p-3 text-center font-bold">
-                    20점
-                  </td>
-                  <td className="border border-gray-300 p-3 text-center font-bold">
-                    {companyScores.fit}
-                  </td>
-                </tr>
+        <td className="border border-gray-300 p-3">
+          활동보고서 제출 여부
+        </td>
 
-                <tr>
-                  <td className="border border-gray-300 p-3 font-bold">
-                    발표 역량
-                  </td>
-                  <td className="border border-gray-300 p-3 font-bold">
-                    CES: 현장 설명력 / ILS: 피칭 전달력
-                  </td>
-                  <td className="border border-gray-300 p-3 text-center font-bold">
-                    10점
-                  </td>
-                  <td className="border border-gray-300 p-3 text-center font-bold">
-                    {companyScores.presentation}
-                  </td>
-                </tr>
+        <td className="border border-gray-300 p-3 text-center font-bold">
+          3점
+        </td>
 
-                <tr className="bg-red-50">
-                  <td
-                    colSpan={2}
-                    className="border border-gray-300 p-3 text-right font-bold"
-                  >
-                    총점
-                  </td>
-                  <td className="border border-gray-300 p-3 text-center font-bold">
-                    60점
-                  </td>
-                  <td className="border border-gray-300 p-3 text-center text-2xl font-bold text-red-900">
-                    {companyTotal}점
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+        <td className="border border-gray-300 p-3 text-center font-bold">
+          0점
+        </td>
+      </tr>
+
+      <tr>
+        <td className="border border-gray-300 p-3 font-bold">
+          공간 활용도
+        </td>
+
+        <td className="border border-gray-300 p-3">
+          입주공간 활용 및 공간관리
+        </td>
+
+        <td className="border border-gray-300 p-3 text-center font-bold">
+          3점
+        </td>
+
+        <td className="border border-gray-300 p-3 text-center font-bold">
+          0점
+        </td>
+      </tr>
+
+      <tr>
+        <td className="border border-gray-300 p-3 font-bold">
+          프로그램 참여도
+        </td>
+
+        <td className="border border-gray-300 p-3">
+          캠퍼스타운 프로그램 참여 및 협조도
+        </td>
+
+        <td className="border border-gray-300 p-3 text-center font-bold">
+          4점
+        </td>
+
+        <td className="border border-gray-300 p-3 text-center font-bold">
+          0점
+        </td>
+      </tr>
+
+      <tr className="bg-red-50">
+        <td
+          colSpan={2}
+          className="border border-gray-300 p-3 text-right font-bold"
+        >
+          정량평가 합계
+        </td>
+
+        <td className="border border-gray-300 p-3 text-center font-bold">
+          10점
+        </td>
+
+        <td className="border border-gray-300 p-3 text-center text-2xl font-bold text-red-900">
+          0점
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div className="border border-gray-300 rounded-xl overflow-hidden mb-6">
+  <div className="bg-gray-900 text-white px-5 py-3 font-bold">
+    평가항목
+  </div>
+
+  <table className="w-full border-collapse text-sm">
+    <thead>
+      <tr className="bg-gray-100">
+        <th className="border border-gray-300 p-3 text-left w-[230px]">
+          평가항목
+        </th>
+
+        <th className="border border-gray-300 p-3 text-left">
+          세부 평가내용
+        </th>
+
+        <th className="border border-gray-300 p-3 w-[90px]">
+          배점
+        </th>
+
+        <th className="border border-gray-300 p-3 w-[100px]">
+          평가점수
+        </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+        <td className="border border-gray-300 p-3 font-bold">
+          기업역량 및 성장성
+        </td>
+
+        <td className="border border-gray-300 p-3">
+          사업성, 성장 가능성, 실행력
+        </td>
+
+        <td className="border border-gray-300 p-3 text-center font-bold">
+          10점
+        </td>
+
+        <td className="border border-gray-300 p-3 text-center font-bold">
+          {companyScores.growth}
+        </td>
+      </tr>
+
+      <tr>
+        <td className="border border-gray-300 p-3 font-bold">
+          기술·서비스 경쟁력
+        </td>
+
+        <td className="border border-gray-300 p-3">
+          제품·서비스 완성도, 시장 경쟁력
+        </td>
+
+        <td className="border border-gray-300 p-3 text-center font-bold">
+          10점
+        </td>
+
+        <td className="border border-gray-300 p-3 text-center font-bold">
+          {companyScores.tech}
+        </td>
+      </tr>
+
+      <tr>
+        <td className="border border-gray-300 p-3 font-bold">
+          참가계획의 적정성 및 트랙 적합성
+        </td>
+
+        <td className="border border-gray-300 p-3">
+          CES·ILS 참가목적의 적절성 및 계획의 구체성
+        </td>
+
+        <td className="border border-gray-300 p-3 text-center font-bold">
+          10점
+        </td>
+
+        <td className="border border-gray-300 p-3 text-center font-bold">
+          {companyScores.fit}
+        </td>
+      </tr>
+
+      <tr className="bg-red-50">
+        <td
+          colSpan={2}
+          className="border border-gray-300 p-3 text-right font-bold"
+        >
+          서류평가 합계
+        </td>
+
+        <td className="border border-gray-300 p-3 text-center font-bold">
+          30점
+        </td>
+
+        <td className="border border-gray-300 p-3 text-center text-2xl font-bold text-red-900">
+          {companyTotal}점
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
           <div className="border border-gray-300 rounded-xl overflow-hidden mb-6">
             <div className="bg-gray-900 text-white px-5 py-3 font-bold">
               평가의견
             </div>
 
-            <div className="p-4 min-h-[150px] font-bold whitespace-pre-wrap">
+            <div className="p-4 min-h-[80px] font-bold whitespace-pre-wrap">
               {companyComment || " "}
             </div>
           </div>
