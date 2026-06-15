@@ -1,22 +1,33 @@
 import { companies } from "./companies";
 
-export const stargateCESIds = [
-  "company-003", // 마이크로메디옴
-];
-
-export const stargateILSIds = [
-  "company-021", // 한국정보통신과학기술
-];
-
-export const stargateCESCompanies = companies.filter((company) =>
-  stargateCESIds.includes(company.id)
-);
-
-export const stargateILSCompanies = companies.filter((company) =>
-  stargateILSIds.includes(company.id)
-);
-
 export const stargateCompanies = [
-  ...stargateCESCompanies,
-  ...stargateILSCompanies,
+{
+...companies.find((c) => c.id === "company-032")!,
+id: "company-032-ils",
+track: "ILS",
+},
+
+{
+...companies.find((c) => c.id === "company-016")!,
+id: "company-016-ils",
+track: "ILS",
+},
+
+{
+...companies.find((c) => c.id === "company-016")!,
+id: "company-016-ces",
+track: "CES",
+},
+
+{
+...companies.find((c) => c.id === "company-027")!,
+id: "company-027-ces",
+track: "CES",
+},
+
+{
+...companies.find((c) => c.id === "company-003")!,
+id: "company-003-ces",
+track: "CES",
+},
 ];

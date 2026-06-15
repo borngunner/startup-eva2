@@ -27,7 +27,7 @@ export default function Home() {
           </button>
 
           <button
-            onClick={() => alert("입주연장평가는 다음 단계에서 연결할 예정입니다.")}
+            onClick={() => alert("입주연장평가는 아직 개최되지 않았습니다.")}
             className="w-full border border-gray-300 text-gray-700 py-5 rounded-xl font-bold text-xl hover:bg-gray-50"
           >
             입주연장평가
@@ -43,7 +43,7 @@ export default function Home() {
             <div className="grid gap-4">
               <button
   onClick={() => router.push("/stargate-document")}
-  className="w-full bg-white border border-gray-300 py-4 rounded-xl font-bold text-lg hover:bg-gray-100"
+  className="w-full bg-[#0B1736] text-white py-4 rounded-xl font-bold text-lg hover:bg-[#162654]"
 >
   STARGATE 서류평가
 </button>

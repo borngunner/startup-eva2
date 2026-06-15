@@ -1,21 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import {
-  stargateCESCompanies,
-  stargateILSCompanies,
-} from "../stargateCompanies";
-
-const evaluationCompanies = [
-  ...stargateCESCompanies.map((company) => ({
-    ...company,
-    evaluationTrack: "CES",
-  })),
-  ...stargateILSCompanies.map((company) => ({
-    ...company,
-    evaluationTrack: "ILS",
-  })),
-];
+  getStargateQuantScore,
+  getStargateQuantTotal,
+} from "../stargateQuantScores";
+import { useEffect, useState } from "react";
+import { stargateCompanies } from "../stargateCompanies";
+const evaluationCompanies = stargateCompanies;
 
 type ScoreSet = {
   growth: number;
@@ -82,6 +73,8 @@ comments,
 const currentCompany = evaluationCompanies[currentIndex];
 const currentComment = comments[currentCompany?.id] || "";
 const currentScores = savedScores[currentCompany?.id] || emptyScores;
+const currentQuantScore = getStargateQuantScore(currentCompany?.id);
+const currentQuantTotal = getStargateQuantTotal(currentCompany?.id);
 
   const scoreTotal =
     currentScores.growth +
@@ -284,8 +277,9 @@ const lastValueStyle = {
             <div className="bg-red-50 text-red-900 font-bold p-3 border-r border-b">
               평가트랙
             </div>
+
             <div className="p-3 border-b font-bold">
-              {currentCompany.evaluationTrack} 트랙
+            {currentCompany.track} 트랙
             </div>
 
             <div className="bg-red-50 text-red-900 font-bold p-3 border-r ">
@@ -315,21 +309,21 @@ const lastValueStyle = {
         <td className="border p-3 font-bold">활동보고서 제출</td>
         <td className="border p-3">활동보고서 제출 여부</td>
         <td className="border p-3 text-center font-bold">3점</td>
-        <td className="border p-3 text-center font-bold">0점</td>
+        <td className="border p-3 text-center font-bold">{currentQuantScore.report}점</td>
       </tr>
 
       <tr>
         <td className="border p-3 font-bold">공간 활용도</td>
         <td className="border p-3">입주공간 활용 및 공간관리</td>
         <td className="border p-3 text-center font-bold">3점</td>
-        <td className="border p-3 text-center font-bold">0점</td>
+        <td className="border p-3 text-center font-bold">{currentQuantScore.space}점</td>
       </tr>
 
       <tr>
         <td className="border p-3 font-bold">프로그램 참여도</td>
         <td className="border p-3">캠퍼스타운 프로그램 참여 및 협조도</td>
         <td className="border p-3 text-center font-bold">4점</td>
-        <td className="border p-3 text-center font-bold">0점</td>
+        <td className="border p-3 text-center font-bold">{currentQuantScore.program}점</td>
       </tr>
 
       <tr className="bg-red-50">
@@ -338,7 +332,7 @@ const lastValueStyle = {
         </td>
         <td className="border p-3 text-center font-bold">10점</td>
         <td className="border p-3 text-center text-xl font-bold text-red-900">
-          0점
+          {currentQuantTotal}점
         </td>
       </tr>
     </tbody>
@@ -507,7 +501,7 @@ const lastValueStyle = {
 
         <div className="flex justify-between items-center mt-8">
   <button
-    onClick={() => setIsStarted(false)}
+    onClick={() => window.location.href = "/"}
     className="bg-gray-500 text-white px-5 py-3 rounded-lg font-bold"
   >
     메인으로
@@ -527,8 +521,8 @@ const lastValueStyle = {
     >
       {evaluationCompanies.map((company, index) => (
         <option key={company.id} value={index}>
-          {index + 1}. {company.name} / {company.evaluationTrack} 트랙
-        </option>
+        {index + 1}. {company.name} / {company.track} 트랙
+       </option>
       ))}
     </select>
 
@@ -617,7 +611,7 @@ const lastValueStyle = {
                 평가트랙
               </div>
               <div className="p-3 border-b border-gray-300 font-bold">
-                {company.evaluationTrack} 트랙
+              {company.track} 트랙
               </div>
 
               <div className="bg-red-50 text-red-900 font-bold p-3 border-r border-gray-300">
