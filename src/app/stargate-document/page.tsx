@@ -793,7 +793,7 @@ return (
     colSpan={2}
     className="border border-gray-300 p-3 text-right font-bold"
   >
-    최종점수
+    정량평가+서류평가 
   </td>
 
   <td className="border border-gray-300 p-3 text-center font-bold">
