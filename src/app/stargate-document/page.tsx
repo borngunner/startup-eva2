@@ -114,7 +114,60 @@ const lastValueStyle = {
       },
     });
   };
+const handleExportData = () => {
+  const exportData = {
+    judgeName,
+    evaluationDate,
+    savedScores,
+    comments,
+  };
 
+  const blob = new Blob(
+    [JSON.stringify(exportData, null, 2)],
+    { type: "application/json" }
+  );
+
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.href = url;
+
+  link.download =
+    `STARGATE_${judgeName || "평가위원"}.json`;
+
+  link.click();
+
+  URL.revokeObjectURL(url);
+};
+
+const handleImportData = (
+  event: React.ChangeEvent<HTMLInputElement>
+) => {
+  const file = event.target.files?.[0];
+
+  if (!file) return;
+
+  const reader = new FileReader();
+
+  reader.onload = () => {
+    try {
+      const importedData = JSON.parse(
+        reader.result as string
+      );
+
+      setJudgeName(importedData.judgeName || "");
+      setEvaluationDate(importedData.evaluationDate || "");
+      setSavedScores(importedData.savedScores || {});
+      setComments(importedData.comments || {});
+
+      alert("평가 데이터를 불러왔습니다.");
+    } catch {
+      alert("잘못된 파일입니다.");
+    }
+  };
+
+  reader.readAsText(file);
+};
   if (!isStarted) {
     return (
       <main className="min-h-screen bg-gray-100 flex items-center justify-center p-8">
@@ -286,7 +339,7 @@ const lastValueStyle = {
     정량평가
   </div>
 
-  <table className="w-full border-collapse text-sm">
+  <table className="w-full border-collapse text-sm font-bold">
     <thead>
       <tr className="bg-gray-100">
         <th className="border p-3 text-left w-[220px]">평가항목</th>
@@ -300,31 +353,31 @@ const lastValueStyle = {
       <tr>
         <td className="border p-3 font-bold">활동보고서 제출</td>
         <td className="border p-3">활동보고서 제출 여부</td>
-        <td className="border p-3 text-center font-bold">3점</td>
-        <td className="border p-3 text-center font-bold">{currentQuantScore.report}점</td>
+        <td className="border p-3 text-center font-bold">3</td>
+        <td className="border p-3 text-center font-bold">{currentQuantScore.report}</td>
       </tr>
 
       <tr>
         <td className="border p-3 font-bold">공간 활용도</td>
         <td className="border p-3">입주공간 활용 및 공간관리</td>
-        <td className="border p-3 text-center font-bold">3점</td>
-        <td className="border p-3 text-center font-bold">{currentQuantScore.space}점</td>
+        <td className="border p-3 text-center font-bold">3</td>
+        <td className="border p-3 text-center font-bold">{currentQuantScore.space}</td>
       </tr>
 
       <tr>
         <td className="border p-3 font-bold">프로그램 참여도</td>
         <td className="border p-3">캠퍼스타운 프로그램 참여 및 협조도</td>
-        <td className="border p-3 text-center font-bold">4점</td>
-        <td className="border p-3 text-center font-bold">{currentQuantScore.program}점</td>
+        <td className="border p-3 text-center font-bold">4</td>
+        <td className="border p-3 text-center font-bold">{currentQuantScore.program}</td>
       </tr>
 
       <tr className="bg-red-50">
         <td colSpan={2} className="border p-3 text-right font-bold">
           정량평가 합계
         </td>
-        <td className="border p-3 text-center font-bold">10점</td>
+        <td className="border p-3 text-center font-bold">10</td>
         <td className="border p-3 text-center text-2xl font-bold text-red-900">
-          {currentQuantTotal}점
+          {currentQuantTotal}
         </td>
       </tr>
     </tbody>
@@ -350,7 +403,7 @@ const lastValueStyle = {
               <tr>
                 <td className="border p-3 font-bold">기업역량 및 성장성</td>
                 <td className="border p-3 font-bold">사업성, 성장 가능성, 실행력</td>
-                <td className="border p-3 text-center font-bold">10점</td>
+                <td className="border p-3 text-center font-bold">10</td>
                 <td className="border p-3">
                   <input
                     type="number"
@@ -370,7 +423,7 @@ const lastValueStyle = {
                 <td className="border p-3 font-bold">
                   제품·서비스 완성도, 시장 경쟁력
                 </td>
-                <td className="border p-3 text-center font-bold">10점</td>
+                <td className="border p-3 text-center font-bold">10</td>
                 <td className="border p-3">
                   <input
                     type="number"
@@ -387,12 +440,14 @@ const lastValueStyle = {
 
               <tr>
                 <td className="border p-3 font-bold">
-                  참가계획의 적정성 및 트랙 적합성
+                  참가계획의 적정성 및 
+                  <br />트랙 적합성
                 </td>
                 <td className="border p-3 font-bold">
-                  CES: 전시 및 글로벌 적합성 / ILS: 일본 시장 적합성
+                  CES: 전시 및 글로벌 적합성 
+                  <br />ILS: 일본 시장 적합성
                 </td>
-                <td className="border p-3 text-center font-bold">10점</td>
+                <td className="border p-3 text-center font-bold">10</td>
                 <td className="border p-3">
                   <input
                     type="number"
@@ -413,9 +468,9 @@ const lastValueStyle = {
                 <td colSpan={2} className="border p-3 text-right font-bold">
                   총점
                 </td>
-                <td className="border p-3 text-center font-bold">30점</td>
+                <td className="border p-3 text-center font-bold">30</td>
                 <td className="border p-3 text-center text-2xl font-bold text-red-900">
-                  {scoreTotal}점
+                  {scoreTotal}
                 </td>
               </tr>
             </tbody>
@@ -423,7 +478,7 @@ const lastValueStyle = {
         </section>
 
        <section className="border rounded-xl overflow-hidden mb-8">
-  <div className="bg-gray-900 text-white px-5 py-3 font-bold">
+  <div className="bg-gray-900 text-white px-4 py-3 font-bold">
     평가의견
   </div>
 
@@ -472,18 +527,35 @@ const lastValueStyle = {
         <div className="flex justify-between items-center mt-8">
   <button
     onClick={() => window.location.href = "/"}
-    className="bg-gray-500 text-white px-5 py-3 rounded-lg font-bold"
+    className="bg-gray-600 text-white px-4 py-3 rounded-lg font-bold whitespace-nowrap"
   >
     메인으로
   </button>
 
   <div className="flex items-center gap-3">
-    <button
-  onClick={() => window.print()}
-  className="bg-white border-2 border-red-900 text-red-900 px-5 py-3 rounded-lg font-bold"
->
-  PDF출력
-</button>
+  <button
+    onClick={handleExportData}
+    className="bg-white border-2 border-gray-800 text-gray-800 px-3 py-2 rounded-lg font-bold"
+  >
+    평가 내보내기
+  </button>
+
+  <label className="bg-white border-2 border-gray-800 text-gray-800 px-3 py-2 rounded-lg font-bold cursor-pointer">
+    평가 불러오기
+    <input
+      type="file"
+      accept=".json"
+      onChange={handleImportData}
+      className="hidden"
+    />
+  </label>
+
+  <button
+    onClick={() => window.print()}
+    className="bg-white border-2 border-red-900 text-red-900 px-3 py-2 rounded-lg font-bold"
+  >
+    PDF출력
+  </button>
     <select
       value={currentIndex}
       onChange={(e) => setCurrentIndex(Number(e.target.value))}
@@ -509,7 +581,7 @@ const lastValueStyle = {
           Math.min(evaluationCompanies.length - 1, prev + 1)
         )
       }
-      className="bg-red-900 text-white px-5 py-3 rounded-lg font-bold"
+      className="bg-red-900 text-white px-3 py-2 rounded-lg font-bold"
     >
       다음 평가
     </button>
@@ -626,11 +698,11 @@ return (
         </td>
 
         <td className="border border-gray-300 p-3 text-center font-bold">
-          3점
+          3
         </td>
 
         <td className="border border-gray-300 p-3 text-center font-bold">
-          {companyQuantScore.report}점
+          {companyQuantScore.report}
         </td>
       </tr>
 
@@ -644,11 +716,11 @@ return (
         </td>
 
         <td className="border border-gray-300 p-3 text-center font-bold">
-          3점
+          3
         </td>
 
         <td className="border border-gray-300 p-3 text-center font-bold">
-          {companyQuantScore.space}점
+          {companyQuantScore.space}
         </td>
       </tr>
 
@@ -662,11 +734,11 @@ return (
         </td>
 
         <td className="border border-gray-300 p-3 text-center font-bold">
-          4점
+          4
         </td>
 
         <td className="border border-gray-300 p-3 text-center font-bold">
-          {companyQuantScore.program}점
+          {companyQuantScore.program}
         </td>
       </tr>
 
@@ -679,11 +751,11 @@ return (
         </td>
 
         <td className="border border-gray-300 p-3 text-center font-bold">
-          10점
+          10
         </td>
 
         <td className="border border-gray-300 p-3 text-center text-2xl font-bold text-red-900">
-          {companyQuantTotal}점
+          {companyQuantTotal}
         </td>
       </tr>
     </tbody>
@@ -727,7 +799,7 @@ return (
         </td>
 
         <td className="border border-gray-300 p-3 text-center font-bold">
-          10점
+          10
         </td>
 
         <td className="border border-gray-300 p-3 text-center font-bold">
@@ -745,7 +817,7 @@ return (
         </td>
 
         <td className="border border-gray-300 p-3 text-center font-bold">
-          10점
+          10
         </td>
 
         <td className="border border-gray-300 p-3 text-center font-bold">
@@ -759,11 +831,12 @@ return (
         </td>
 
         <td className="border border-gray-300 p-3">
-          CES·ILS 참가목적의 적절성 및 계획의 구체성
+          CES: 전시 및 글로벌 적합성 
+                  <br />ILS: 일본 시장 적합성
         </td>
 
         <td className="border border-gray-300 p-3 text-center font-bold">
-          10점
+          10
         </td>
 
         <td className="border border-gray-300 p-3 text-center font-bold">
@@ -780,11 +853,11 @@ return (
         </td>
 
         <td className="border border-gray-300 p-3 text-center font-bold">
-          30점
+          30
         </td>
 
         <td className="border border-gray-300 p-3 text-center text-2xl font-bold text-red-900">
-          {companyTotal}점
+          {companyTotal}
         </td>
       </tr>
 
@@ -797,11 +870,11 @@ return (
   </td>
 
   <td className="border border-gray-300 p-3 text-center font-bold">
-    40점
+    40
   </td>
 
   <td className="border border-gray-300 p-2 text-center text-2xl font-bold text-red-900">
-  {companyFinalTotal}점
+  {companyFinalTotal}
 </td>
 </tr>
 
